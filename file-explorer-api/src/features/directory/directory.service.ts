@@ -3,20 +3,17 @@ import { ReadStream } from 'node:fs';
 import fs from 'node:fs/promises';
 import { Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
+import path from 'node:path';
 
-import path from 'path';
 import { FileUtilService } from 'src/utils/file-util/file-util.service';
 import { DirectoryItem } from './interfaces/directory-item.interface';
+import { DirectoryResponse } from './interfaces/directory-response.interface';
 
 @Injectable()
 export class DirectoryService {
   private readonly _logger = new Logger(DirectoryService.name, { timestamp: true });
 
-  constructor(private _fileUtilService: FileUtilService) {}
-
-  public getHello(): string {
-    return 'Hello !' + process.cwd();
-  }
+  constructor(private readonly _fileUtilService: FileUtilService) {}
 
   private async *listDirNames(dirPath): AsyncGenerator<string> {
     const dir = await fs.opendir(dirPath);
@@ -74,23 +71,49 @@ export class DirectoryService {
     });
   }
 
-  public async getDirectoryListing(dirPath: string): Promise<Partial<DirectoryItem>[]> {
-    //Get the directory stream
-    const results: Partial<DirectoryItem>[] = [];
+  public async getDirectoryListing(dirPath: string): Promise<DirectoryResponse> {
+    const startTime = performance.now();
+    const results: DirectoryItem[] = [];
+
+    // Read directory and process using streams
+    const files = await fs.readdir(dirPath);
 
     //Get the directory stream
-    const readStream = ReadStream.from(this.listDirNames(dirPath));
+    // const readStream = ReadStream.from(this.listDirNames(dirPath));
+    const readStream = ReadStream.from(files);
+
+    //Setup transform stream that converts file names to directory data objects
     const transformStream = this.processFileName(dirPath);
 
-    transformStream.on('data', (data) => {
-      console.log(data);
+    transformStream.on('data', (data: DirectoryItem) => {
+      this._logger.debug(data);
       results.push(data);
     });
 
     await pipeline(readStream, transformStream);
 
-    return new Promise((resolve) => {
-      resolve(results);
-    });
+    // Calculate statistics using functional approach
+    const [totalCount, directoryCount, fileCount] =
+      results.length > 0
+        ? [
+            results.length,
+            results.filter((item) => item.isDirectory && !item.error).length,
+            results.filter((item) => !item.isDirectory).length,
+          ]
+        : [0, 0, 0];
+
+    const response = {
+      path: dirPath,
+      parentPath: path.dirname(dirPath),
+      items: results,
+      totalCount,
+      directoryCount,
+      fileCount,
+    };
+    
+    const endTime = performance.now();
+    this._logger.log(`Directory listing for ${dirPath} completed in ${(endTime - startTime).toFixed(2)}ms`);
+    
+    return Promise.resolve(response);
   }
 }
