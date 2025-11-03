@@ -15,43 +15,42 @@ export class DirectoryController {
   }
 
   @Get('directory')
-  async getDirectoryListing(@Query('path') dirPath: string): Promise<Partial<DirectoryResponse>> {
+  async getDirectoryListing(@Query('path') dirPath: string): Promise<Partial<DirectoryResponse>[]> {
     //Return current working directory info if no path is provided
+    // if (!dirPath) {
+    //   const cwd = process.cwd();
+    //   return {
+    //     path: cwd,
+    //     parentPath: path.dirname(cwd),
+    //     items: [],
+    //     totalCount: 0,
+    //     directoryCount: 0,
+    //     fileCount: 0,
+    //   };
+    // }
+
     if (!dirPath) {
-      const cwd = process.cwd();
-      return {
-        path: cwd,
-        parentPath: path.dirname(cwd),
-        items: [],
-        totalCount: 0,
-        directoryCount: 0,
-        fileCount: 0,
-      };
+      dirPath = process.cwd();
     }
 
     //Error handling
-    //Check if path existsF
-
+    //Check if path exists
     try {
       await fs.lstat(dirPath);
     } catch {
       throw new HttpException('Path does not exist', 400);
     }
 
-    try {
-      const stats = await fs.stat('/Users/joe/test.txt');
-      stats.isFile(); // true
-      stats.isDirectory(); // false
-      stats.isSymbolicLink(); // false
-      console.log(stats.size); // 1024000 //= 1MB
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const stats = await fs.stat('/Users/joe/test.txt');
+    //   stats.isFile(); // true
+    //   stats.isDirectory(); // false
+    //   stats.isSymbolicLink(); // false
+    //   console.log(stats.size); // 1024000 //= 1MB
+    // } catch (err) {
+    //   console.log(err);
+    // }
 
-    const results = await this.directoryService.getDirectoryListing(dirPath);
-
-    return {
-      path: this.directoryService.getHello(),
-    };
+    return await this.directoryService.getDirectoryListing(dirPath);
   }
 }
