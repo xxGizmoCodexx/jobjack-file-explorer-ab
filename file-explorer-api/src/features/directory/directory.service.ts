@@ -76,11 +76,11 @@ export class DirectoryService {
     const results: DirectoryItem[] = [];
 
     // Read directory and process using streams
-    const files = await fs.readdir(dirPath);
+    // const files = await fs.readdir(dirPath);
 
     //Get the directory stream
-    // const readStream = ReadStream.from(this.listDirNames(dirPath));
-    const readStream = ReadStream.from(files);
+    const readStream = ReadStream.from(this.listDirNames(dirPath));
+    // const readStream = ReadStream.from(files);
 
     //Setup transform stream that converts file names to directory data objects
     const transformStream = this.processFileName(dirPath);
