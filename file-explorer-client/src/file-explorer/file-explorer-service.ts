@@ -14,7 +14,7 @@ export class FileExplorerService {
 
   public loadDirectory$(path: string): Observable<DirectoryResponse> {
     return this._http.get<DirectoryResponse>(this._baseUrl, {
-      params: { path: encodeURIComponent(path) },
+      params: { path: path },
     });
 
     // this.directoryData$.subscribe({

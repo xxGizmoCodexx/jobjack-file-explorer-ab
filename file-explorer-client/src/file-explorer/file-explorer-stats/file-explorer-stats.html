@@ -1,2 +1,20 @@
-<p>file-explorer-stats works!</p>
-<p>{{inputPath()}}</p>
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="row text-center">
+      <div class="col-md-3">
+        <div class="text-muted small">Directories</div>
+        <h4 class="mb-0 text-info">{{ directoryCount() }}</h4>
+      </div>
+      <div class="col-md-3">
+        <div class="text-muted small">Files</div>
+        <h4 class="mb-0 text-success">{{ fileCount() }}</h4>
+      </div>
+      <div class="col-md-3">
+        <div class="text-muted small">Total Items</div>
+        <h4 class="mb-0">{{ totalCount() }}</h4>
+      </div>
+      <div class="col-md-3">
+      </div>
+    </div>
+  </div>
+</div>

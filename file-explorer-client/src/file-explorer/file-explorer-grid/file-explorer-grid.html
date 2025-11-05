@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of items(); track item.path) {
+          @for(item of items(); track item.path){
           <tr
             [class.table-info]="item.isDirectory"
             [class.text-muted]="item.error"

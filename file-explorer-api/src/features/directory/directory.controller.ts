@@ -21,9 +21,11 @@ export class DirectoryController {
 
     //Error handling
     //Check if path exists
+    console.log(`Checking path: ${dirPath}`);
     try {
       await fs.lstat(dirPath);
-    } catch {
+    } catch (error) {
+      console.error(error);
       throw new HttpException('Path does not exist', 400);
     }
 
