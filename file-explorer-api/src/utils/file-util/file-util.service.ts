@@ -21,7 +21,7 @@ export class FileUtilService {
   }
 
   // Helper function to get permissions string
-  public getPermissions = (mode: number, isDirectory: boolean) => {
+  public getPermissions(mode: number, isDirectory: boolean) {
     const isReadable = (mode & parseInt('444', 8)) !== 0;
     const isWritable = (mode & parseInt('222', 8)) !== 0;
     const isExecutable = (mode & parseInt('111', 8)) !== 0;
@@ -31,5 +31,5 @@ export class FileUtilService {
       writable: isWritable,
       executable: isExecutable || isDirectory,
     };
-  };
+  }
 }

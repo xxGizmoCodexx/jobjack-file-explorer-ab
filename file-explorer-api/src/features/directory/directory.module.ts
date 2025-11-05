@@ -5,6 +5,5 @@ import { DirectoryService } from './directory.service';
 @Module({
   controllers: [DirectoryController],
   providers: [DirectoryService],
-//   exports: [DirectoryService, DirectoryController],
 })
 export class DirectoryModule {}

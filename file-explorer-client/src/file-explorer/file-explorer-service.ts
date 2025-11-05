@@ -16,16 +16,5 @@ export class FileExplorerService {
     return this._http.get<DirectoryResponse>(this._baseUrl, {
       params: { path: path },
     });
-
-    // this.directoryData$.subscribe({
-    //   next: (data) => {
-    //     this.currentPath = data.path;
-    //     this.isLoading = false;
-    //   },
-    //   error: (err) => {
-    //     this.error = err.error?.message || 'Failed to load directory';
-    //     this.isLoading = false;
-    //   },
-    // });
   }
 }

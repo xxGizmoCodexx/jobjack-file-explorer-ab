@@ -63,9 +63,9 @@
               }
             </td>
 
-            <!-- Modified Date -->
+            <!-- Created Date -->
             <td>
-              @if (item.modifiedDate) {
+              @if (item.createdDate) {
               <small>{{ item.createdDate | date : 'short' }}</small>
               } @else {
               <small class="text-muted">-</small>
@@ -106,9 +106,9 @@
         </tbody>
       </table>
 
-      <!-- <div *ngIf="data.items.length === 0" class="text-center py-5 text-muted">
+      @if(items().length === 0) {
         <p>This directory is empty</p>
-      </div> -->
+      }
     </div>
   </div>
 </div>
