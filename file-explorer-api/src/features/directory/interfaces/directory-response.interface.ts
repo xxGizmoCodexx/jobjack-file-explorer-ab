@@ -7,4 +7,5 @@ export interface DirectoryResponse {
   totalCount: number;
   directoryCount: number;
   fileCount: number;
+  pathSeparator: string;
 }

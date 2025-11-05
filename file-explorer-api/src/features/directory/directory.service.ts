@@ -102,18 +102,19 @@ export class DirectoryService {
           ]
         : [0, 0, 0];
 
-    const response = {
+    const response: DirectoryResponse = {
       path: dirPath,
       parentPath: path.dirname(dirPath),
       items: results,
       totalCount,
       directoryCount,
       fileCount,
+      pathSeparator: path.sep,
     };
-    
+
     const endTime = performance.now();
     this._logger.log(`Directory listing for ${dirPath} completed in ${(endTime - startTime).toFixed(2)}ms`);
-    
+
     return Promise.resolve(response);
   }
 }

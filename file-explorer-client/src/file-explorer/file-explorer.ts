@@ -18,6 +18,8 @@ export class FileExplorer implements OnInit {
   private _fileExplorerService = inject(FileExplorerService);
 
   public contextPath = '';
+  public contextPathParts = [''];
+
   public directoryData$?: Observable<DirectoryResponse>;
 
   ngOnInit(): void {
@@ -28,6 +30,7 @@ export class FileExplorer implements OnInit {
     this.directoryData$ = this._fileExplorerService.loadDirectory$(path).pipe(
       tap((data) => {
         this.contextPath = data.path;
+        this.contextPathParts = data.path.split(data.pathSeparator).filter((part) => part.length > 0);
       })
     );
   }
