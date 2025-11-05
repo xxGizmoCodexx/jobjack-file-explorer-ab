@@ -1,0 +1,26 @@
+services:
+  api:
+    build:
+      context: ./file-explorer-api
+      dockerfile: Dockerfile
+    container_name: jobjack-file-explorer-api
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      - type: bind
+        source: D:/
+        target: /app/host-data
+
+  web:
+    build:
+      context: ./file-explorer-client
+      dockerfile: Dockerfile
+    container_name: jobjack-file-explorer-client
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+

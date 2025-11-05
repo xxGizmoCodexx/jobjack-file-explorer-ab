@@ -1,7 +1,7 @@
 <!-- Directory Table -->
 <div class="card mb-3">
   <div class="card-body">
-    <div class="table-responsive overflow-auto" style="max-height: 65vh;">
+    <div class="table-responsive overflow-auto" style="max-height: 65vh">
       <table class="table table-hover table-striped align-middle">
         <thead class="table-light">
           <tr>
@@ -23,21 +23,24 @@
           >
             <!-- Icon -->
             <td class="text-center">
-                @if (item.isDirectory) {
-                <span class="badge bg-info fs-6"> 📁 </span>
-                } @else {
-                <span class="badge bg-secondary fs-6"> 📄 </span>
-                }
+              @if (item.isDirectory) {
+              <span class="badge bg-info fs-6"> 📁 </span>
+              } @else {
+              <span class="badge bg-secondary fs-6"> 📄 </span>
+              }
             </td>
 
             <!-- Name -->
             <td>
+              @if(item.isDirectory){
               <strong>{{ item.name }}</strong>
-                @if (item.error) {
-                <small class="text-danger d-block">
-                  {{ item.error }}
-                </small>
-                }
+              } @else {
+              <span>{{ item.name }}</span>
+              } @if (item.error) {
+              <small class="text-danger d-block">
+                {{ item.error }}
+              </small>
+              }
             </td>
 
             <!-- Type/Extension -->
