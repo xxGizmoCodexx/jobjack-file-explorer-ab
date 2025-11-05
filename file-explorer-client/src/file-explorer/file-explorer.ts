@@ -39,4 +39,8 @@ export class FileExplorer implements OnInit {
 
     this.loadDirectory(item.path);
   }
+
+  public navigateToParent(path: string) {
+    this.loadDirectory(path);
+  }
 }

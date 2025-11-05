@@ -1,29 +1,38 @@
 <div class="container-fluid py-3">
+  @if (directoryData$ | async; as data) {
   <!-- Header -->
   <div class="row mb-3">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <h1 class="h3 mb-3">Directory Browser</h1>
-          <div class="input-group mb-2">
-            <span class="input-group-text bg-primary text-white">
-              <i class="bi bi-folder"></i>
-            </span>
-            <input type="text" class="form-control" readonly [(ngModel)]="contextPath" />
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h1 class="h3 mb-0">JOBJACK Directory Browser</h1>
+            <img
+              width="50"
+              height="50"
+              src="https://d1s4umho1unrgr.cloudfront.net/2023/06/12/06/47/41/f9265899-d8a9-408a-85a3-3188b3342cd6/syPB6SjSJekKFJEkpogP?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMXM0dW1obzF1bnJnci5jbG91ZGZyb250Lm5ldC8yMDIzLzA2LzEyLzA2LzQ3LzQxL2Y5MjY1ODk5LWQ4YTktNDA4YS04NWEzLTMxODhiMzM0MmNkNi9zeVBCNlNqU0pla0tGSkVrcG9nUCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc2NDAyNjA4Mn19fV19&Signature=XqaFKz5uNWoTFvwBRlRp1JwzxAEYSdJU392jpeJwbs154hxRUr1H0wlu2Ww5tGhBJBe2hhYS4~8MFuxN2kxVDedQqSjERnDHZEqUjaC71VO27OSqKGq~pSKJQKWKykc~pDNhqlbMKdysBN50srgcU5lrFsIgrZOjHZx9pd3l2K3Y28m15hHZkNjSG6MF2XG5yTlDNjnL91-pk44iMeJEB8KbIv8KOI-kZ-1zaXl4EwoiQQTwdG3P3kEKMiu~BeA8XDwC~6njc7rqGyFLYO03JJ~IWbWXCuC1CuzuOT9luVvmS6RJiANn3Y4jutfyUyaFPPsjOh4zOl1sUQKaYK-f7w__&Key-Pair-Id=APKAITFCDZDSWOJU5OZA"
+            />
+          </div>
+          <div class="d-flex gap-2">
             <button
-              class="btn btn-outline-primary w-100"
-              >
-              <!-- (click)="goUp(data.parentPath)"
-              [disabled]="data.path === data.parentPath" -->
-              <i class="bi bi-arrow-up"></i> Go Up
+              class="btn btn-outline-primary"
+              (click)="navigateToParent(data.parentPath)"
+              [disabled]="data.path === data.parentPath"
+            >
+              <i class="bi bi-arrow-up"></i>
             </button>
+            <div class="input-group">
+              <span class="input-group-text bg-primary text-white">
+                <i class="bi bi-folder"></i>
+              </span>
+              <input type="text" class="form-control" readonly [(ngModel)]="contextPath" />
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  @if (directoryData$ | async; as data) {
   <file-explorer-grid
     [items]="data.items"
     (itemClicked)="updateDirectoryData($event)"

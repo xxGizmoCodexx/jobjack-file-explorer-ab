@@ -1,2 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
-@use "../node_modules/bootstrap/scss/bootstrap";
+@import "./styles/colours";
+
+// Bootstrap setup
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Bootstrap Icons setup - https://icons.getbootstrap.com/#usage
+$bootstrap-icons-font-dir: "bootstrap-icons/font/fonts";
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons";
+
+@import "./styles/typography.scss";
+
+
+
