@@ -1,1 +1,111 @@
-<p>file-explorer-grid works!</p>
+<!-- Directory Table -->
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover table-striped align-middle">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 50px"></th>
+            <th style="width: 35%">Name</th>
+            <th style="width: 15%">Type</th>
+            <th style="width: 15%">Size</th>
+            <th style="width: 20%">Modified</th>
+            <th style="width: 15%">Permissions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items(); track item.path) {
+          <tr
+            [class.table-info]="item.isDirectory"
+            [class.text-muted]="item.error"
+            [style.cursor]="item.isDirectory && !item.error ? 'pointer' : 'default'"
+            (click)="updateDirectory(item)"
+          >
+            <!-- Icon -->
+            <td class="text-center">
+                @if (item.isDirectory) {
+                <span class="badge bg-info fs-6"> 📁 </span>
+                } @else {
+                <span class="badge bg-secondary fs-6"> 📄 </span>
+                }
+            </td>
+
+            <!-- Name -->
+            <td>
+              <strong>{{ item.name }}</strong>
+                @if (item.error) {
+                <small class="text-danger d-block">
+                  {{ item.error }}
+                </small>
+                }
+            </td>
+
+            <!-- Type/Extension -->
+            <td>
+              @if (item.isDirectory) {
+              <span class="badge bg-info">Directory</span>
+              } @else {
+              <span class="badge bg-secondary">
+                {{ item.extension }}
+              </span>
+              }
+            </td>
+
+            <!-- Size -->
+            <td>
+              @if(!item.isDirectory) {
+              <span>{{ item.sizeFormatted }}</span>
+              } @else {
+              <span class="text-muted">-</span>
+              }
+            </td>
+
+            <!-- Modified Date -->
+            <td>
+              @if (item.modifiedDate) {
+              <small>{{ item.modifiedDate | date : 'short' }}</small>
+              } @else {
+              <small class="text-muted">-</small>
+              }
+            </td>
+
+            <!-- Permissions -->
+            <td>
+              <div class="btn-group" role="group">
+                <span
+                  class="badge"
+                  [class.bg-success]="item.permissions.readable"
+                  [class.bg-secondary]="!item.permissions.readable"
+                  title="Readable"
+                >
+                  R
+                </span>
+                <span
+                  class="badge"
+                  [class.bg-success]="item.permissions.writable"
+                  [class.bg-secondary]="!item.permissions.writable"
+                  title="Writable"
+                >
+                  W
+                </span>
+                <span
+                  class="badge"
+                  [class.bg-success]="item.permissions.executable"
+                  [class.bg-secondary]="!item.permissions.executable"
+                  title="Executable"
+                >
+                  X
+                </span>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- <div *ngIf="data.items.length === 0" class="text-center py-5 text-muted">
+        <p>This directory is empty</p>
+      </div> -->
+    </div>
+  </div>
+</div>

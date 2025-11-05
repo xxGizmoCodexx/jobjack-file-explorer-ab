@@ -12,7 +12,6 @@
               <i class="bi bi-folder"></i>
             </span>
             <input type="text" class="form-control" [(ngModel)]="contextPath" />
-            <p>{{contextPath}}</p>
           </div>
         </div>
       </div>
@@ -20,15 +19,12 @@
   </div>
 
   <ng-container *ngIf="directoryData$ | async as data; else loading">
-    <h2>Admin settings</h2>
-    <p>Current Path: {{ data.path }}</p>
-    <p>Total Items: {{ data.totalCount }}</p>
-    <!-- additional admin-only UI can go here -->
+    <file-explorer-grid [items]="data.items"></file-explorer-grid>
+    <file-explorer-stats [inputPath]="contextPath"></file-explorer-stats>
   </ng-container>
   <ng-template #loading>
     <p>Loading directory data...</p>
   </ng-template>
 
-  <file-explorer-stats [inputPath]="contextPath"></file-explorer-stats>
-  <file-explorer-grid></file-explorer-grid>
+
 </div>
