@@ -10,7 +10,7 @@ services:
       - PORT=3000
     volumes:
       - type: bind
-        source: D:/
+        source: C:/
         target: /app/host-data
 
   web:

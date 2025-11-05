@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, Query } from '@nestjs/common';
+import { Controller, Get, HttpException, Logger, Query } from '@nestjs/common';
 import fs from 'node:fs/promises';
 import { DirectoryService } from './directory.service';
 import { DirectoryResponse } from './interfaces/directory-response.interface';
@@ -6,6 +6,9 @@ import { DirectoryResponse } from './interfaces/directory-response.interface';
 const BASE_PATH = 'directory';
 @Controller()
 export class DirectoryController {
+  private readonly _logger = new Logger(DirectoryController.name, { timestamp: true });
+
+
   constructor(private readonly directoryService: DirectoryService) {}
 
   @Get(`${BASE_PATH}/online`)
@@ -21,11 +24,10 @@ export class DirectoryController {
 
     //Error handling
     //Check if path exists
-    console.log(`Checking path: ${dirPath}`);
     try {
       await fs.lstat(dirPath);
     } catch (error) {
-      console.error(error);
+      this._logger.error(error);
       throw new HttpException('Path does not exist', 400);
     }
 

@@ -72,15 +72,10 @@ export class DirectoryService {
   }
 
   public async getDirectoryListing(dirPath: string): Promise<DirectoryResponse> {
-    const startTime = performance.now();
     const results: DirectoryItem[] = [];
-
-    // Read directory and process using streams
-    // const files = await fs.readdir(dirPath);
 
     //Get the directory stream
     const readStream = ReadStream.from(this.listDirNames(dirPath));
-    // const readStream = ReadStream.from(files);
 
     //Setup transform stream that converts file names to directory data objects
     const transformStream = this.processFileName(dirPath);
@@ -92,7 +87,7 @@ export class DirectoryService {
 
     await pipeline(readStream, transformStream);
 
-    // Calculate statistics using functional approach
+    // Calculate statistics
     const [totalCount, directoryCount, fileCount] =
       results.length > 0
         ? [
@@ -111,9 +106,6 @@ export class DirectoryService {
       fileCount,
       pathSeparator: path.sep,
     };
-
-    const endTime = performance.now();
-    this._logger.log(`Directory listing for ${dirPath} completed in ${(endTime - startTime).toFixed(2)}ms`);
 
     return Promise.resolve(response);
   }

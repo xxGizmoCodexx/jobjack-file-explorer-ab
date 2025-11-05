@@ -3,7 +3,7 @@ import { FileExplorerGrid } from './file-explorer-grid/file-explorer-grid';
 import { FileExplorerStats } from './file-explorer-stats/file-explorer-stats';
 import { FormsModule } from '@angular/forms';
 import { FileExplorerService } from './file-explorer-service';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 import { DirectoryResponse } from './interfaces/directory-response.interface';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { DirectoryItem } from './interfaces/directory-item.interface';
@@ -17,20 +17,27 @@ import { DirectoryItem } from './interfaces/directory-item.interface';
 export class FileExplorer implements OnInit {
   private _fileExplorerService = inject(FileExplorerService);
 
-  public contextPath = '';
-  public contextPathParts = [''];
-
+  public contextPath: string = '';
+  public contextPathParts: string[] = [''];
   public directoryData$?: Observable<DirectoryResponse>;
+  public isError: boolean = false;
 
   ngOnInit(): void {
     this.loadDirectory(this.contextPath);
   }
 
   public loadDirectory(path: string) {
+    this.isError = false;
     this.directoryData$ = this._fileExplorerService.loadDirectory$(path).pipe(
       tap((data) => {
         this.contextPath = data.path;
-        this.contextPathParts = data.path.split(data.pathSeparator).filter((part) => part.length > 0);
+        this.contextPathParts = data.path
+          .split(data.pathSeparator)
+          .filter((part) => part.length > 0);
+      }),
+      catchError((error) => {
+        this.isError = true;
+        throw error;
       })
     );
   }
