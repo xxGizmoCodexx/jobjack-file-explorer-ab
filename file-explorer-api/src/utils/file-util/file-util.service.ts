@@ -3,6 +3,7 @@ import path from 'path';
 
 @Injectable()
 export class FileUtilService {
+  // Helper function to get file extension
   public getFileExtension(filename: string): string {
     const ext = path.extname(filename).toLowerCase();
     return ext === '' ? 'no extension' : ext;
@@ -13,11 +14,9 @@ export class FileUtilService {
     if (bytes === 0) return '0 B';
     const k = 1024;
 
-    return Math.round(bytes / k) + ' KB'; // Simplified to KB for brevity
+    const kb = Math.round(bytes / k);
 
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+    return kb == 0 ? '1 KB' : kb + ' KB'; // Simplified to KB for brevity
   }
 
   // Helper function to get permissions string
